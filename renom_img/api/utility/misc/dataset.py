@@ -45,7 +45,26 @@ def fetch_detection_dataset_pets(split_validation=True, test_size=0.2):
             download(url)
 
         with tarfile.open(path) as tar:
-            tar.extractall(path="pets")
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar, path="pets")
 
     def exist_xml_list(path, xml_name_list):
         name, _ = os.path.splitext(path)
@@ -106,7 +125,26 @@ def fetch_detection_dataset_voc_2007(split_validation=True):
         if not os.path.exists(voc_2007_tar):
             download(voc_2007_url)
         with tarfile.open(voc_2007_tar) as tar:
-            tar.extractall()
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar)
 
     train_voc_2007 = [line.strip() for line in open(
         "VOCdevkit/VOC2007/ImageSets/Main/train.txt").readlines()]
@@ -178,7 +216,26 @@ def fetch_detection_dataset_voc_2012(split_validation=True):
         if not os.path.exists(voc_2012_tar):
             download(voc_2012_url)
         with tarfile.open(voc_2012_tar) as tar:
-            tar.extractall()
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar)
 
     train_voc_2012 = [line.strip() for line in open(
         "VOCdevkit/VOC2012/ImageSets/Main/train.txt").readlines()]
@@ -233,7 +290,26 @@ def fetch_classification_dataset_caltech101(split_validation=True, test_size=0.2
     if not os.path.exists(image_caltech101):
         download(caltech101_url)
         with tarfile.open(caltech_101_tar) as tar:
-            tar.extractall()
+            def is_within_directory(directory, target):
+                
+                abs_directory = os.path.abspath(directory)
+                abs_target = os.path.abspath(target)
+            
+                prefix = os.path.commonprefix([abs_directory, abs_target])
+                
+                return prefix == abs_directory
+            
+            def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+            
+                for member in tar.getmembers():
+                    member_path = os.path.join(path, member.name)
+                    if not is_within_directory(path, member_path):
+                        raise Exception("Attempted Path Traversal in Tar File")
+            
+                tar.extractall(path, members, numeric_owner=numeric_owner) 
+                
+            
+            safe_extract(tar)
 
     class_map = sorted(os.listdir(image_caltech101))[1:]
 
